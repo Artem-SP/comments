@@ -12,7 +12,7 @@ import { fetchDataDB } from './asyncAction/getDataDB';
 function App() {
 
   const [value, setValue] = useState("");
-  // const [comment, setValue] = useState("");
+  // const [comment, setComment] = useState("");
   const dispatch = useDispatch()
   
  const comments = useSelector(state => state.comments.comments)
@@ -28,21 +28,25 @@ function App() {
   // }
 
   const addComment = (body) => {
+
 console.log(comments)
     const comment = {
       id: Date.now(),
       body: body
     }
-
-    fetch('http://localhost:8000/comments', {      method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(comment)
+    fetch('http://localhost:8000/comments', {   
     
-  } )
-  // dispatch(addCommentAction(comment))
-
+    
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(comment)
+    }
+    
+     )
+  dispatch(addCommentAction(comment))
+  // dispatch(fetchDataDB())
 
     // console.log(comment)
     // console.log(comments)
@@ -51,6 +55,18 @@ console.log(comments)
     }
 
     const removeComment = (comment) => {
+      let id = comment.id
+
+      fetch(`http://localhost:8000/comments/${id}`, {   
+    
+    
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(comment)
+      })
+
       dispatch(removeCommentAction(comment.id))
     }
 
